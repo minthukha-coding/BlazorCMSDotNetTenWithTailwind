@@ -149,61 +149,61 @@
     </div>
 
     <!-- Recent Activities & System Info Section -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    @* <div class="grid grid-cols-1 lg:grid-cols-3 gap-6"> *@
         
         <!-- Recent Activities Log -->
-        <div class="bg-[#FCFBFA] border border-[#E6E0DD] rounded-lg p-6 shadow-sm lg:col-span-2 space-y-4">
-            <h3 class="text-sm font-semibold uppercase text-[#5C1D24] tracking-normal border-b border-[#E6E0DD] pb-2">
-                Recent Activity Logs
-            </h3>
-            
-            <div class="space-y-3 text-sm">
-                <div class="flex items-center justify-between py-2 border-b border-[#E6E0DD]/60">
-                    <div class="flex items-center gap-3">
-                        <span class="w-2 h-2 rounded-full bg-green-600"></span>
-                        <span class="text-[#2D2424]">Updated <strong>Home Section</strong> background video</span>
-                    </div>
-                    <span class="text-xs text-[#735A5A]">2 hours ago</span>
-                </div>
-
-                <div class="flex items-center justify-between py-2 border-b border-[#E6E0DD]/60">
-                    <div class="flex items-center gap-3">
-                        <span class="w-2 h-2 rounded-full bg-blue-600"></span>
-                        <span class="text-[#2D2424]">Modified <strong>About Us</strong> paragraph content</span>
-                    </div>
-                    <span class="text-xs text-[#735A5A]">Yesterday</span>
-                </div>
-
-                <div class="flex items-center justify-between py-2">
-                    <div class="flex items-center gap-3">
-                        <span class="w-2 h-2 rounded-full bg-purple-600"></span>
-                        <span class="text-[#2D2424]">Admin profile information updated</span>
-                    </div>
-                    <span class="text-xs text-[#735A5A]">3 days ago</span>
-                </div>
-            </div>
-        </div>
+        @* <div class="bg-[#FCFBFA] border border-[#E6E0DD] rounded-lg p-6 shadow-sm lg:col-span-2 space-y-4"> *@
+        @*     <h3 class="text-sm font-semibold uppercase text-[#5C1D24] tracking-normal border-b border-[#E6E0DD] pb-2"> *@
+        @*         Recent Activity Logs *@
+        @*     </h3> *@
+        @*      *@
+        @*     <div class="space-y-3 text-sm"> *@
+        @*         <div class="flex items-center justify-between py-2 border-b border-[#E6E0DD]/60"> *@
+        @*             <div class="flex items-center gap-3"> *@
+        @*                 <span class="w-2 h-2 rounded-full bg-green-600"></span> *@
+        @*                 <span class="text-[#2D2424]">Updated <strong>Home Section</strong> background video</span> *@
+        @*             </div> *@
+        @*             <span class="text-xs text-[#735A5A]">2 hours ago</span> *@
+        @*         </div> *@
+        @* *@
+        @*         <div class="flex items-center justify-between py-2 border-b border-[#E6E0DD]/60"> *@
+        @*             <div class="flex items-center gap-3"> *@
+        @*                 <span class="w-2 h-2 rounded-full bg-blue-600"></span> *@
+        @*                 <span class="text-[#2D2424]">Modified <strong>About Us</strong> paragraph content</span> *@
+        @*             </div> *@
+        @*             <span class="text-xs text-[#735A5A]">Yesterday</span> *@
+        @*         </div> *@
+        @* *@
+        @*         <div class="flex items-center justify-between py-2"> *@
+        @*             <div class="flex items-center gap-3"> *@
+        @*                 <span class="w-2 h-2 rounded-full bg-purple-600"></span> *@
+        @*                 <span class="text-[#2D2424]">Admin profile information updated</span> *@
+        @*             </div> *@
+        @*             <span class="text-xs text-[#735A5A]">3 days ago</span> *@
+        @*         </div> *@
+        @*     </div> *@
+        @* </div> *@
 
         <!-- Quick Profile & Settings Widget -->
-        <div class="bg-[#FCFBFA] border border-[#E6E0DD] rounded-lg p-6 shadow-sm space-y-4">
-            <h3 class="text-sm font-semibold uppercase text-[#5C1D24] tracking-normal border-b border-[#E6E0DD] pb-2">
-                Account Security
-            </h3>
-            
-            <div class="space-y-3 text-xs text-[#735A5A]">
-                <p>Logged in as <strong class="text-[#2D2424]">Super Administrator</strong>.</p>
-                <p>Ensure you keep your credentials secure and log out when finished managing content.</p>
-            </div>
+        @* <div class="bg-[#FCFBFA] border border-[#E6E0DD] rounded-lg p-6 shadow-sm space-y-4"> *@
+        @*     <h3 class="text-sm font-semibold uppercase text-[#5C1D24] tracking-normal border-b border-[#E6E0DD] pb-2"> *@
+        @*         Account Security *@
+        @*     </h3> *@
+        @*      *@
+        @*     <div class="space-y-3 text-xs text-[#735A5A]"> *@
+        @*         <p>Logged in as <strong class="text-[#2D2424]">Super Administrator</strong>.</p> *@
+        @*         <p>Ensure you keep your credentials secure and log out when finished managing content.</p> *@
+        @*     </div> *@
 
-            <div class="pt-2">
-                <button @onclick="@(() => NavigateTo("/cms/admin-profile"))" 
-                        class="w-full bg-white border border-[#5C1D24] hover:bg-[#F5EFEE] text-[#5C1D24] py-2.5 uppercase font-medium rounded-md transition cursor-pointer text-center text-xs">
-                    Manage Admin Profile
-                </button>
-            </div>
-        </div>
+            @* <div class="pt-2"> *@
+            @*     <button @onclick="@(() => NavigateTo("/cms/admin-profile"))"  *@
+            @*             class="w-full bg-white border border-[#5C1D24] hover:bg-[#F5EFEE] text-[#5C1D24] py-2.5 uppercase font-medium rounded-md transition cursor-pointer text-center text-xs"> *@
+            @*         Manage Admin Profile *@
+            @*     </button> *@
+            @* </div> *@
+        @* </div> *@
 
-    </div>
+    @* </div> *@
 
 </div>
 

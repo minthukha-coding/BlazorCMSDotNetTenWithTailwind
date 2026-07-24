@@ -1,8 +1,5 @@
 @page "/"
-@using System.Security.Claims
 @layout EmptyLayout
-@inject NavigationManager NavigationManager
-@inject IHttpContextAccessor HttpContextAccessor
 
 <head>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -10,8 +7,6 @@
         .font-poppins {
             font-family: 'Poppins', sans-serif;
         }
-
-        /* လိုဂိုနောက်ခံအဖြူကို ဖျောက်ရန် (blend mode) */
         .logo-blend {
             mix-blend-mode: multiply;
         }
@@ -31,41 +26,20 @@
                 Irrawaddy GmbH Portal
             </span>
             <p class="text-sm text-[#735A5A] leading-relaxed">
-                Please enter your credentials to access the enterprise administration system.
+                Please enter your credentials to access the gmbh system.
             </p>
         </div>
-        @* *@
-        @* <EditForm Model="loginModel" OnValidSubmit="HandleLogin" FormName="LoginForm"> *@
-        @*     <div class="space-y-6 mb-8"> *@
-        @*         <div> *@
-        @*             <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal"> *@
-        @*                 Email *@
-        @*             </label> *@
-        @*             <InputText @bind-Value="loginModel.Email" *@
-        @*                        placeholder="name@irrawaddy-gmbh.de" *@
-        @*                        class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] transition-none rounded-md"/> *@
-        @*         </div> *@
-        @* *@
-        @*         <div> *@
-        @*             <div class="flex items-center justify-between mb-2"> *@
-        @*                 <label class="block text-xs uppercase font-medium text-[#5C4D4D] tracking-normal"> *@
-        @*                     Password *@
-        @*                 </label> *@
-        @*             </div> *@
-        @*             <InputText type="password" *@
-        @*                        @bind-Value="loginModel.Password" *@
-        @*                        placeholder="••••••••" *@
-        @*                        class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] transition-none rounded-md"/> *@
-        @*         </div> *@
-        @*     </div> *@
-        @* *@
-        @*     <div class="mb-8"> *@
-        @*         <button type="submit" *@
-        @*                 class="w-full bg-[#5C1D24] hover:bg-[#4A171D] text-[#FCFBFA] px-6 py-3 text-xs uppercase font-medium transition-none cursor-pointer border border-[#5C1D24] rounded-md text-center"> *@
-        @*             Sign In to Dashboard *@
-        @*         </button> *@
-        @*     </div> *@
-        @* </EditForm> *@
+
+        <!-- Theme-matched Error Notification -->
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <div class="mb-6 bg-[#FDF8F8] border-l-4 border-[#5C1D24] text-[#5C1D24] p-4 rounded-r-md text-xs font-medium flex items-center space-x-2">
+                <svg class="w-4 h-4 shrink-0 text-[#5C1D24]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                <span>Invalid email or password. Please check your credentials and try again.</span>
+            </div>
+        }
 
         <form action="/api/login" method="post">
             <div class="space-y-6 mb-8">
@@ -104,11 +78,10 @@
         <!-- Space-Between Footer Block with Nexalogic Link -->
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs text-[#8C7A7A] gap-4">
             <div>
-                <div>&copy; 2026 Irrawaddy GmbH Munich.All rights reserved.Created by <a
+                <div>&copy; 2026 Irrawaddy GmbH Munich. All rights reserved. Created by <a
                         href="https://www.nexalogic.org/" target="_blank"
                         class="text-[#5C1D24] font-medium hover:underline">Nexalogic</a>
                 </div>
-                <div></div>
             </div>
         </div>
 
@@ -116,55 +89,6 @@
 </div>
 
 @code {
-    private LoginModel loginModel = new();
-
-    private async Task HandleLogin()
-    {
-        if (!string.IsNullOrWhiteSpace(loginModel.Email) && !string.IsNullOrWhiteSpace(loginModel.Password))
-        {
-            bool email = loginModel.Email == "gmbh@gmail.com";
-            bool password = loginModel.Password == "123@gmbh.com";
-            if (email || password)
-            {
-                NavigationManager.NavigateTo("/", forceLoad: true);
-            }
-
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, loginModel.Email),
-                new Claim(ClaimTypes.Email, loginModel.Email)
-            };
-
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = true
-            };
-
-            try
-            {
-                if (HttpContextAccessor.HttpContext != null)
-                {
-                    await HttpContextAccessor.HttpContext.SignInAsync(
-                        CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(claimsIdentity),
-                        authProperties);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-
-            NavigationManager.NavigateTo("/dashboard", forceLoad: true);
-        }
-    }
-
-    public class LoginModel
-    {
-        public string Email { get; set; } = "";
-        public string Password { get; set; } = "";
-    }
-
+    [SupplyParameterFromQuery(Name = "error")]
+    private string? error { get; set; }
 }
