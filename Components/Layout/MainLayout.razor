@@ -6,6 +6,19 @@
         .font-poppins {
             font-family: 'Poppins', sans-serif;
         }
+
+        @@keyframes spin-slow {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .animate-spin-custom {
+            animation: spin-slow 1s linear infinite;
+        }
     </style>
 </head>
 
@@ -13,30 +26,33 @@
 
     <!-- Sidebar -->
     <aside class="w-64 bg-[#FCFBFA] border-r border-[#E6E0DD] flex flex-col hidden md:flex">
-        <!-- Logo / App Name -->
-        <div class="h-20 flex items-center px-6 border-b border-[#E6E0DD]">
-            <div>
-                <span class="text-xs uppercase text-[#5C1D24] font-medium block tracking-normal">
-                    Irrawaddy GmbH
-                </span>
-                <span class="text-xl font-semibold text-[#2D2424]">
-                    CMS Portal
-                </span>
+
+        <!-- Sidebar Header with Logo -->
+        <div class="p-6 border-b border-[#E6E0DD] flex flex-col items-center text-center bg-[#FCFBFA]">
+            <div class="mb-2 w-full flex justify-center">
+                <!-- mix-blend-mode: multiply သို့မဟုတ် contrast ဖြင့် နောက်ခံအဖြူကို ဖျောက်ခြင်း -->
+                <img src="./Logo/mainLogo.jpg" alt="Irrawaddy Munich Logo" class="h-16 w-auto object-contain"
+                     style="mix-blend-mode: multiply;"/>
             </div>
+            <span class="text-[10px] uppercase text-[#5C1D24] font-semibold tracking-wider">
+                Irrawaddy GmbH Portal
+            </span>
         </div>
 
         <!-- Navigation Links -->
         <nav class="flex-1 p-4 space-y-2">
-        
-        <!-- Dashboard -->
-        <a href="/cms/dashboard" 
-           class="flex items-center gap-3 px-4 py-3 rounded-md hover:bg-[#E6E0DD]/50 text-[#735A5A] hover:text-[#2D2424] text-xs uppercase font-medium transition">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-            </svg>
-            Dashboard
-        </a>
-        
+
+            <!-- Dashboard -->
+            <a href="/cms/dashboard"
+               class="flex items-center gap-3 px-4 py-3 rounded-md hover:bg-[#E6E0DD]/50 text-[#735A5A] hover:text-[#2D2424] text-xs uppercase font-medium transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                </svg>
+                Dashboard
+            </a>
+
             <!-- Home Edit -->
             <a href="/cms/edit-home"
                class="flex items-center gap-3 px-4 py-3 rounded-md hover:bg-[#E6E0DD]/50 text-[#735A5A] hover:text-[#2D2424] text-xs uppercase font-medium transition">
@@ -69,34 +85,41 @@
                 </svg>
                 Service Edit
             </a>
-            
+
             <!-- Current Focus Edit -->
-            <NavLink href="/cms/edit-current-focus" 
+            <NavLink href="/cms/edit-current-focus"
                      class="flex items-center gap-3 px-4 py-3 rounded-md text-[#735A5A] hover:bg-[#E6E0DD]/50 hover:text-[#2D2424] text-xs uppercase font-medium transition"
                      ActiveClass="bg-[#5C1D24] text-[#FCFBFA] hover:bg-[#5C1D24] hover:text-[#FCFBFA]">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                 </svg>
                 Current Focus Edit
             </NavLink>
-            
+
             <!-- Why Choose Us & Vision Edit -->
-            <NavLink href="/cms/edit-pillars-vision" 
+            <NavLink href="/cms/edit-pillars-vision"
                      class="flex items-center gap-3 px-4 py-3 rounded-md text-[#735A5A] hover:bg-[#E6E0DD]/50 hover:text-[#2D2424] text-xs uppercase font-medium transition"
                      ActiveClass="bg-[#5C1D24] text-[#FCFBFA] hover:bg-[#5C1D24] hover:text-[#FCFBFA]">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                 </svg>
                 Pillars & Vision Edit
             </NavLink>
-            
+
             <!-- Leadership Edit -->
-            <NavLink href="/cms/edit-leadership" 
+            <NavLink href="/cms/edit-leadership"
                      class="flex items-center gap-3 px-4 py-3 rounded-md text-[#735A5A] hover:bg-[#E6E0DD]/50 hover:text-[#2D2424] text-xs uppercase font-medium transition"
                      ActiveClass="bg-[#5C1D24] text-[#FCFBFA] hover:bg-[#5C1D24] hover:text-[#FCFBFA]">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
                 Leadership Edit
             </NavLink>
