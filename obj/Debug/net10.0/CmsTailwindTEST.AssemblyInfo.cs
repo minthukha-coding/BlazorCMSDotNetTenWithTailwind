@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CmsTailwindTEST")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+023b86d049102ee7160147219b16a3f89e74890c")]
 [assembly: System.Reflection.AssemblyProductAttribute("CmsTailwindTEST")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CmsTailwindTEST")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
