@@ -1,6 +1,9 @@
 @page "/cms/dashboard"
+@using Microsoft.AspNetCore.Authorization
 @layout MainLayout
 @inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
+@attribute [Authorize]
 
 <div class="max-w-6xl mx-auto space-y-8">
     
@@ -205,6 +208,17 @@
 </div>
 
 @code {
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is null || !user.Identity.IsAuthenticated)
+        {
+            Navigation.NavigateTo("/");
+        }
+    }
+    
     private void NavigateTo(string url)
     {
         Navigation.NavigateTo(url);

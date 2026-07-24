@@ -1,11 +1,29 @@
-﻿<Router AppAssembly="@typeof(Program).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
-        <FocusOnNavigate RouteData="routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <LayoutView Layout="typeof(Layout.MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
-    </NotFound>
-</Router>
+﻿@using BlazorCMSDotNetTenWithTailwind.Components.Pages.Common
+
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(Program).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.MainLayout)">
+                <NotAuthorized>
+                    @if (!context.User.Identity.IsAuthenticated)
+                    {
+                        // @ ထပ်မသုံးဘဲ တိုက်ရိုက် Navigate လုပ်ရန်
+                        Navigation.NavigateTo("/", true);
+                    }
+                    else
+                    {
+                        <p>Access Denied</p>
+                    }
+                </NotAuthorized>
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            @{
+                Navigation.NavigateTo("/", true);
+            }
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
+
+@inject NavigationManager Navigation

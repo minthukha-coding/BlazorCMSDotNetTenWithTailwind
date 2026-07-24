@@ -1,0 +1,170 @@
+@page "/"
+@using System.Security.Claims
+@layout EmptyLayout
+@inject NavigationManager NavigationManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .font-poppins {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* လိုဂိုနောက်ခံအဖြူကို ဖျောက်ရန် (blend mode) */
+        .logo-blend {
+            mix-blend-mode: multiply;
+        }
+    </style>
+</head>
+
+<div class="min-h-screen bg-[#F5F2F0] text-[#2D2424] flex items-center justify-center p-6 font-poppins tracking-tight">
+    <div class="w-full max-w-xl bg-[#FCFBFA] border border-[#E6E0DD] rounded-lg p-8 md:p-14 relative">
+
+        <!-- Header Block with Logo -->
+        <div class="mb-10 text-center flex flex-col items-center">
+            <div class="mb-3">
+                <img src="./Logo/mainLogo.jpg" alt="Irrawaddy Munich Logo"
+                     class="h-24 w-auto object-contain logo-blend"/>
+            </div>
+            <span class="text-xs uppercase text-[#5C1D24] font-medium block mb-2 tracking-normal">
+                Irrawaddy GmbH Portal
+            </span>
+            <p class="text-sm text-[#735A5A] leading-relaxed">
+                Please enter your credentials to access the enterprise administration system.
+            </p>
+        </div>
+        @* *@
+        @* <EditForm Model="loginModel" OnValidSubmit="HandleLogin" FormName="LoginForm"> *@
+        @*     <div class="space-y-6 mb-8"> *@
+        @*         <div> *@
+        @*             <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal"> *@
+        @*                 Email *@
+        @*             </label> *@
+        @*             <InputText @bind-Value="loginModel.Email" *@
+        @*                        placeholder="name@irrawaddy-gmbh.de" *@
+        @*                        class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] transition-none rounded-md"/> *@
+        @*         </div> *@
+        @* *@
+        @*         <div> *@
+        @*             <div class="flex items-center justify-between mb-2"> *@
+        @*                 <label class="block text-xs uppercase font-medium text-[#5C4D4D] tracking-normal"> *@
+        @*                     Password *@
+        @*                 </label> *@
+        @*             </div> *@
+        @*             <InputText type="password" *@
+        @*                        @bind-Value="loginModel.Password" *@
+        @*                        placeholder="••••••••" *@
+        @*                        class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] transition-none rounded-md"/> *@
+        @*         </div> *@
+        @*     </div> *@
+        @* *@
+        @*     <div class="mb-8"> *@
+        @*         <button type="submit" *@
+        @*                 class="w-full bg-[#5C1D24] hover:bg-[#4A171D] text-[#FCFBFA] px-6 py-3 text-xs uppercase font-medium transition-none cursor-pointer border border-[#5C1D24] rounded-md text-center"> *@
+        @*             Sign In to Dashboard *@
+        @*         </button> *@
+        @*     </div> *@
+        @* </EditForm> *@
+
+        <form action="/api/login" method="post">
+            <div class="space-y-6 mb-8">
+                <div>
+                    <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
+                        Email
+                    </label>
+                    <input type="email" name="email"
+                           placeholder="name@irrawaddy-gmbh.de"
+                           class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] transition-none rounded-md"/>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="block text-xs uppercase font-medium text-[#5C4D4D] tracking-normal">
+                            Password
+                        </label>
+                    </div>
+                    <input type="password" name="password"
+                           placeholder="••••••••"
+                           class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] transition-none rounded-md"/>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <button type="submit"
+                        class="w-full bg-[#5C1D24] hover:bg-[#4A171D] text-[#FCFBFA] px-6 py-3 text-xs uppercase font-medium transition-none cursor-pointer border border-[#5C1D24] rounded-md text-center">
+                    Sign In to Dashboard
+                </button>
+            </div>
+        </form>
+
+        <!-- Separator Line -->
+        <div class="border-t border-[#E6E0DD] my-8"></div>
+
+        <!-- Space-Between Footer Block with Nexalogic Link -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs text-[#8C7A7A] gap-4">
+            <div>
+                <div>&copy; 2026 Irrawaddy GmbH Munich.All rights reserved.Created by <a
+                        href="https://www.nexalogic.org/" target="_blank"
+                        class="text-[#5C1D24] font-medium hover:underline">Nexalogic</a>
+                </div>
+                <div></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    private LoginModel loginModel = new();
+
+    private async Task HandleLogin()
+    {
+        if (!string.IsNullOrWhiteSpace(loginModel.Email) && !string.IsNullOrWhiteSpace(loginModel.Password))
+        {
+            bool email = loginModel.Email == "gmbh@gmail.com";
+            bool password = loginModel.Password == "123@gmbh.com";
+            if (email || password)
+            {
+                NavigationManager.NavigateTo("/", forceLoad: true);
+            }
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, loginModel.Email),
+                new Claim(ClaimTypes.Email, loginModel.Email)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true
+            };
+
+            try
+            {
+                if (HttpContextAccessor.HttpContext != null)
+                {
+                    await HttpContextAccessor.HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        authProperties);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            NavigationManager.NavigateTo("/dashboard", forceLoad: true);
+        }
+    }
+
+    public class LoginModel
+    {
+        public string Email { get; set; } = "";
+        public string Password { get; set; } = "";
+    }
+
+}

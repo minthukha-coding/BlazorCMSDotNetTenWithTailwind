@@ -1,4 +1,9 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@inherits LayoutComponentBase
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager NavigationManager
+
 
 <head>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -134,15 +139,15 @@
                 </svg>
                 Contact Edit
             </a>
-            <a href="/"
-               class="flex items-center gap-3 px-4 py-3 rounded-md hover:bg-[#E6E0DD]/50 text-[#735A5A] hover:text-[#2D2424] text-xs uppercase font-medium transition">
+            <button @onclick="HandleLogout"
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded-md hover:bg-[#E6E0DD]/50 text-[#735A5A] hover:text-[#2D2424] text-xs uppercase font-medium transition text-left cursor-pointer border-0 bg-transparent">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                      stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                 </svg>
                 Logout
-            </a>
+            </button>
         </nav>
     </aside>
 
@@ -185,9 +190,8 @@
                             </svg>
                             Profile
                         </a>
-                        <div class="border-t border-[#E6E0DD] my-1"></div>
                         <button @onclick="HandleLogout"
-                                class="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs text-[#5C1D24] hover:bg-[#5C1D24]/10 transition text-left cursor-pointer">
+                                class="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs text-[#5C1D24] hover:bg-[#5C1D24]/10 transition text-left cursor-pointer border-0 bg-transparent">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#5C1D24]" fill="none"
                                  viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -220,7 +224,8 @@
 
     private void HandleLogout()
     {
-        // Logout လုပ်သည့် Logic များကို ဤနေရာတွင် ထည့်သွင်းနိုင်ပါသည်
+        // API endpoint ဆီသို့ forceLoad ဖြင့် တိုက်ရိုက် ပို့ပေးခြင်းဖြင့် Cookie နှင့် Session များကို သန့်ရှင်းစွာ ဖြတ်ပေးမည်
+        NavigationManager.NavigateTo("/api/logout", true);
     }
 
 }
