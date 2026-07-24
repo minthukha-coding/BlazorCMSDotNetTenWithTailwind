@@ -35,7 +35,6 @@
         <!-- Sidebar Header with Logo -->
         <div class="p-6 border-b border-[#E6E0DD] flex flex-col items-center text-center bg-[#FCFBFA]">
             <div class="mb-2 w-full flex justify-center">
-                <!-- mix-blend-mode: multiply သို့မဟုတ် contrast ဖြင့် နောက်ခံအဖြူကို ဖျောက်ခြင်း -->
                 <img src="./Logo/mainLogo.jpg" alt="Irrawaddy Munich Logo" class="h-16 w-auto object-contain"
                      style="mix-blend-mode: multiply;"/>
             </div>
@@ -164,11 +163,9 @@
             <div class="relative">
                 <button @onclick="ToggleDropdown"
                         class="flex items-center gap-3 bg-white border border-[#D9D0CC] hover:border-[#5C1D24] px-4 py-2.5 rounded-lg text-xs font-medium text-[#2D2424] transition cursor-pointer">
-                    <div
-                        class="w-6 h-6 rounded-full bg-[#5C1D24] text-[#FCFBFA] flex items-center justify-center text-[10px] font-semibold">
-                        A
-                    </div>
-                    <span>Admin User</span>
+                    <!-- Profile Image replaced here -->
+                    <img src="/Logo/win_htet_aung.png" alt="Admin Avatar" class="w-6 h-6 rounded-full object-cover border border-[#5C1D24]" />
+                    <span>Win Htet Aung</span>
                     <svg xmlns="http://www.w3.org/2000/svg"
                          class="h-3.5 w-3.5 text-[#735A5A] transition-transform duration-200 @(isDropdownOpen ? "rotate-180" : "")"
                          fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -224,8 +221,6 @@
 
     private void HandleLogout()
     {
-        // API endpoint ဆီသို့ forceLoad ဖြင့် တိုက်ရိုက် ပို့ပေးခြင်းဖြင့် Cookie နှင့် Session များကို သန့်ရှင်းစွာ ဖြတ်ပေးမည်
         NavigationManager.NavigateTo("/api/logout", true);
     }
-
 }
