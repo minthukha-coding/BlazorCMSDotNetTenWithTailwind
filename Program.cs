@@ -18,7 +18,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/"; // Login မဝင်ထားရင် သွားရမည့်လမ်းကြောင်း
+        options.LoginPath = "/";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
     });
 
@@ -36,12 +36,10 @@ if (!app.Environment.IsDevelopment())
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 app.UseHttpsRedirection();
 
-app.UseStaticFiles(); // (သို့) app.MapStaticAssets();
+app.UseStaticFiles();
 
-// ၁။ Routing ကို ဦးစွာ ခံရပါမည်
 app.UseRouting();
 
-// ၂။ Authentication နှင့် Authorization ကို MapStaticAssets / MapRazorComponents မတိုင်မီ တပ်ဆင်ရပါမည်
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -57,14 +55,13 @@ app.MapPost("/api/login", async (HttpContext context) =>
     var email = form["email"];
     var password = form["password"];
 
-    // (Optional) ဒီနေရာမှာ သင့်ရဲ့ Database ထဲက Email / Password စစ်ဆေးမှုများ ထည့်နိုင်သည်
     if (!string.IsNullOrEmpty(email))
     {
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, email),
             new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.Role, "Admin") // လိုအပ်ပါက Role ထည့်နိုင်သည်
+            new Claim(ClaimTypes.Role, "Admin")
         };
 
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -74,13 +71,11 @@ app.MapPost("/api/login", async (HttpContext context) =>
             AllowRefresh = true
         };
 
-        // ၁။ Cookie ကို Server တွင် Sign In လုပ်ခြင်း
         await context.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme, 
             new ClaimsPrincipal(claimsIdentity), 
             authProperties);
         
-        // ၂။ Dashboard သို့ Force Load ဖြင့် ဝင်ရောက်ခြင်း (Cookie အသစ်ပါလာစေရန်)
         return Results.Redirect("/cms/dashboard", true);
     }
     
@@ -89,10 +84,8 @@ app.MapPost("/api/login", async (HttpContext context) =>
 
 app.MapGet("/api/logout", async (HttpContext context) =>
 {
-    // ၁။ Cookie ကို SignOut လုပ်ခြင်း
     await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-    // ၂။ Browser ထဲက Cookies များကို ဖျက်ခြင်း
     if (context.Request.Cookies.Count > 0)
     {
         foreach (var cookie in context.Request.Cookies.Keys)
@@ -101,7 +94,6 @@ app.MapGet("/api/logout", async (HttpContext context) =>
         }
     }
 
-    // ၃။ Login Page သို့ Force Redirect လုပ်ခြင်း
     return Results.Redirect("/", true);
 });
 

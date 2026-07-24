@@ -7,7 +7,6 @@
                 <NotAuthorized>
                     @if (!context.User.Identity.IsAuthenticated)
                     {
-                        // @ ထပ်မသုံးဘဲ တိုက်ရိုက် Navigate လုပ်ရန်
                         Navigation.NavigateTo("/", true);
                     }
                     else

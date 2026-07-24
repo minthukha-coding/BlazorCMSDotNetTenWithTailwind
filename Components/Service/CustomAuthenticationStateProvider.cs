@@ -29,7 +29,6 @@ public class CustomAuthenticationStateProvider : RevalidatingServerAuthenticatio
     protected override async Task<bool> ValidateAuthenticationStateAsync(
         AuthenticationState authenticationState, CancellationToken cancellationToken)
     {
-        // Cookie ဆက်လက် အလုပ်လုပ်ခြင်း ရှိမရှိ စစ်ဆေးခြင်း
         var principal = authenticationState.User;
         return principal.Identity?.IsAuthenticated ?? false;
     }
