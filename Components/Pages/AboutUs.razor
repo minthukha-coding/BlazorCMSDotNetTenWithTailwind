@@ -1,0 +1,158 @@
+@page "/cms/edit-about"
+@layout MainLayout
+@inject NavigationManager Navigation
+
+<div class="max-w-4xl mx-auto space-y-8">
+
+    <!-- Page Header -->
+    <div class="flex items-center justify-between border-b border-[#E6E0DD] pb-6">
+        <div class="flex items-center space-x-4">
+            <!-- Back Button -->
+            <button @onclick="GoBack"
+                    class="bg-white border border-[#D9D0CC] hover:bg-[#F5EFEE] text-[#5C1D24] p-2 rounded-md transition cursor-pointer flex items-center justify-center"
+                    title="Back">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+            </button>
+            <div>
+                <span class="text-xs uppercase text-[#5C1D24] font-medium block mb-1 tracking-normal">
+                    CMS Portal • Content Management
+                </span>
+                <h1 class="text-2xl font-semibold text-[#2D2424]">
+                    Edit About Us Section
+                </h1>
+            </div>
+        </div>
+        <button @onclick="HandleSave"
+                class="bg-[#5C1D24] hover:bg-[#4A171D] text-[#FCFBFA] px-6 py-2.5 text-xs uppercase font-medium rounded-md transition cursor-pointer">
+            Save Changes
+        </button>
+    </div>
+
+    <!-- Edit Form Card -->
+    <div class="bg-[#FCFBFA] border border-[#E6E0DD] rounded-lg p-8 shadow-sm">
+        <EditForm Model="aboutModel" OnValidSubmit="HandleSave">
+            <div class="space-y-6">
+
+                <!-- Section Subtitle / Tag -->
+                <div>
+                    <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
+                        Section Subtitle (e.g., OUR HERITAGE)
+                    </label>
+                    <InputText @bind-Value="aboutModel.SubTitle"
+                               class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                </div>
+
+                <!-- Main Heading -->
+                <div>
+                    <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
+                        Main Heading (Title)
+                    </label>
+                    <InputText @bind-Value="aboutModel.MainTitle"
+                               class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                </div>
+
+                <!-- Highlight Paragraph (Paragraph 1) -->
+                <div>
+                    <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
+                        Highlight Paragraph (Italic / Styled)
+                    </label>
+                    <InputTextArea @bind-Value="aboutModel.Paragraph1" rows="3"
+                                   class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                </div>
+
+                <!-- Description Paragraph 2 -->
+                <div>
+                    <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
+                        Description Paragraph 2
+                    </label>
+                    <InputTextArea @bind-Value="aboutModel.Paragraph2" rows="3"
+                                   class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                </div>
+
+                <!-- Description Paragraph 3 -->
+                <div>
+                    <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
+                        Description Paragraph 3
+                    </label>
+                    <InputTextArea @bind-Value="aboutModel.Paragraph3" rows="3"
+                                   class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                </div>
+
+                <!-- Description Paragraph 4 -->
+                <div>
+                    <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
+                        Description Paragraph 4
+                    </label>
+                    <InputTextArea @bind-Value="aboutModel.Paragraph4" rows="3"
+                                   class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                </div>
+
+                <!-- About Image Upload & Preview Section -->
+                <div class="pt-4 border-t border-[#E6E0DD]">
+                    <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
+                        About Section Image (Logo / Graphic)
+                    </label>
+
+                </div>
+
+            </div>
+        </EditForm>
+    </div>
+
+</div>
+
+@code {
+
+    private AboutSectionModel aboutModel = new()
+    {
+        SubTitle = "OUR HERITAGE",
+        MainTitle = "About Us",
+        Paragraph1 = "Irrawaddy GmbH is a Munich-based company dedicated to creating business opportunities between Germany and Myanmar.",
+        Paragraph2 = "We offer personalized and tailor-made consulting services to businesses, entrepreneurs, students, and organizations, helping them navigate opportunities in Germany. Our work includes business consulting, market entry support, education advisory, and investment-related services.",
+        Paragraph3 = "The company also focuses on strategic investments in the restaurant and hospitality industry, particularly in whisky bar concepts and modern Asian cuisine dining experiences.",
+        Paragraph4 = "With a strong commitment to quality, integrity, and long-term partnerships, we aim to support our clients in achieving sustainable growth and success across Germany markets.",
+        ImageUrl = "/images/irrawaddy-logo.png"
+    };
+
+    private string imagePreviewUrl = "/images/irrawaddy-logo.png";
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/cms/dashboard");
+    }
+
+    private async Task HandleFileSelection(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null)
+        {
+            var format = file.ContentType;
+            var buffer = new byte[file.Size];
+            await file.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024).ReadAsync(buffer);
+            imagePreviewUrl = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+
+            aboutModel.ImageUrl = file.Name;
+        }
+    }
+
+    private void HandleSave()
+    {
+        // About Us အချက်အလက်များကို သိမ်းဆည်းရန် logic များ
+    }
+
+    public class AboutSectionModel
+    {
+        public string SubTitle { get; set; } = "";
+        public string MainTitle { get; set; } = "";
+        public string Paragraph1 { get; set; } = "";
+        public string Paragraph2 { get; set; } = "";
+        public string Paragraph3 { get; set; } = "";
+        public string Paragraph4 { get; set; } = "";
+        public string ImageUrl { get; set; } = "";
+    }
+
+}

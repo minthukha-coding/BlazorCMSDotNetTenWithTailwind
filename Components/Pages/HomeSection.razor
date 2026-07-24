@@ -1,17 +1,28 @@
 @page "/cms/edit-home"
 @layout MainLayout
+@inject NavigationManager Navigation
 
 <div class="max-w-4xl mx-auto space-y-8">
     
     <!-- Page Header -->
     <div class="flex items-center justify-between border-b border-[#E6E0DD] pb-6">
-        <div>
-            <span class="text-xs uppercase text-[#5C1D24] font-medium block mb-1 tracking-normal">
-                CMS Portal • Content Management
-            </span>
-            <h1 class="text-2xl font-semibold text-[#2D2424]">
-                Edit Home Section (Hero)
-            </h1>
+        <div class="flex items-center space-x-4">
+            <!-- Back Button -->
+            <button @onclick="GoBack" 
+                    class="bg-white border border-[#D9D0CC] hover:bg-[#F5EFEE] text-[#5C1D24] p-2 rounded-md transition cursor-pointer flex items-center justify-center"
+                    title="Back">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </button>
+            <div>
+                <span class="text-xs uppercase text-[#5C1D24] font-medium block mb-1 tracking-normal">
+                    CMS Portal • Content Management
+                </span>
+                <h1 class="text-2xl font-semibold text-[#2D2424]">
+                    Edit Home Section (Hero)
+                </h1>
+            </div>
         </div>
         <button @onclick="HandleSave" 
                 class="bg-[#5C1D24] hover:bg-[#4A171D] text-[#FCFBFA] px-6 py-2.5 text-xs uppercase font-medium rounded-md transition cursor-pointer">
@@ -72,7 +83,7 @@
                     <InputFile OnChange="HandleFileSelection" class="w-full bg-white border border-[#D9D0CC] p-2.5 text-sm text-[#2D2424] rounded-md cursor-pointer file:mr-4 file:py-1.5 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-[#5C1D24] file:text-[#FCFBFA] hover:file:bg-[#4A171D]" />
                     <span class="text-[11px] text-[#735A5A] mt-1 block">PNG, JPG, MP4</span>
 
-                    <!-- Preview Box (ရှိပြီးသား (သို့) အသစ်တင်လိုက်သည့် မီဒီယာကို ပြသရန်) -->
+                    <!-- Preview Box -->
                     @if (!string.IsNullOrEmpty(mediaPreviewUrl))
                     {
                         <div class="mt-4 relative rounded-lg overflow-hidden border border-[#E6E0DD] bg-black/5 max-h-72 flex items-center justify-center">
@@ -102,7 +113,7 @@
         Description2 = "We provide personalized and tailored consulting services for individuals, businesses, entrepreneurs, students, and organizations seeking opportunities in Germany.",
         ButtonText = "CONTACT US",
         ButtonLink = "/contact",
-        MediaUrl = "/images/hero-bg.jpg" // ပုံသေ ရှိပြီးသား background URL (သို့မဟုတ် path)
+        MediaUrl = "/images/hero-bg.jpg"
     };
 
     private string mediaPreviewUrl = "/images/hero-bg.jpg";
@@ -110,8 +121,13 @@
 
     protected override void OnInitialized()
     {
-        // Component စတင်ချိန်တွင် ရှိပြီးသား Media က Image လား Video လား စစ်ဆေးခြင်း
         CheckMediaType(mediaPreviewUrl);
+    }
+
+    private void GoBack()
+    {
+        // ဥပမာ - CMS Dashboard သို့ ပြန်သွားရန် (သို့မဟုတ် လိုချင်သော path ကိုထည့်နိုင်ပါသည်)
+        Navigation.NavigateTo("/cms/dashboard");
     }
 
     private async Task HandleFileSelection(InputFileChangeEventArgs e)
@@ -119,19 +135,14 @@
         var file = e.File;
         if (file != null)
         {
-            // Browser ပေါ်တွင် ချက်ချင်း Preview ပြရန် URL တစ်ခု ဖန်တီးခြင်း (Object URL)
-            // မှတ်ချက် - တကယ့် production တွင် memory leak မဖြစ်စေရန် ရေရှည်အတွက် IBrowserFile ကို stream ဖြင့် server သို့တင်ရပါမည်။
             var format = file.ContentType;
-            
-            // ဖိုင်အမျိုးအစားအလိုက် ပုံ သို့မဟုတ် ဗီဒီယို ဟုတ်မဟုတ် ခွဲခြားခြင်း
             isVideo = format.StartsWith("video/");
 
-            // Stream ကို အသုံးပြု၍ Data URL ဖန်တီးခြင်း
             var buffer = new byte[file.Size];
             await file.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024).ReadAsync(buffer);
             mediaPreviewUrl = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
             
-            homeModel.MediaUrl = file.Name; // Database တွင် သိမ်းရန် ဖိုင်နာမည်ကို ထည့်ခြင်း
+            homeModel.MediaUrl = file.Name;
         }
     }
 
