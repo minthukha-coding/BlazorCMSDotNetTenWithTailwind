@@ -1,0 +1,168 @@
+@page "/cms/edit-home"
+@layout MainLayout
+
+<div class="max-w-4xl mx-auto space-y-8">
+    
+    <!-- Page Header -->
+    <div class="flex items-center justify-between border-b border-[#E6E0DD] pb-6">
+        <div>
+            <span class="text-xs uppercase text-[#5C1D24] font-medium block mb-1 tracking-normal">
+                CMS Portal • Content Management
+            </span>
+            <h1 class="text-2xl font-semibold text-[#2D2424]">
+                Edit Home Section (Hero)
+            </h1>
+        </div>
+        <button @onclick="HandleSave" 
+                class="bg-[#5C1D24] hover:bg-[#4A171D] text-[#FCFBFA] px-6 py-2.5 text-xs uppercase font-medium rounded-md transition cursor-pointer">
+            Save Changes
+        </button>
+    </div>
+
+    <!-- Edit Form Card -->
+    <div class="bg-[#FCFBFA] border border-[#E6E0DD] rounded-lg p-8 shadow-sm">
+        <EditForm Model="homeModel" OnValidSubmit="HandleSave">
+            <div class="space-y-6">
+                
+                <!-- Main Title -->
+                <div>
+                    <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
+                        Main Title (Heading)
+                    </label>
+                    <InputText @bind-Value="homeModel.MainTitle"
+                               class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                </div>
+
+                <!-- Description Paragraph 1 -->
+                <div>
+                    <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
+                        Description Paragraph 1
+                    </label>
+                    <InputTextArea @bind-Value="homeModel.Description1" rows="3"
+                                   class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                </div>
+
+                <!-- Description Paragraph 2 -->
+                <div>
+                    <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
+                        Description Paragraph 2
+                    </label>
+                    <InputTextArea @bind-Value="homeModel.Description2" rows="3"
+                                   class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                </div>
+
+                <!-- Button Settings Group -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-[#E6E0DD]">
+                    <div>
+                        <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
+                            Action Button Text
+                        </label>
+                        <InputText @bind-Value="homeModel.ButtonText"
+                                   class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                    </div>
+                </div>
+
+                <!-- Background Media Upload & Preview Section -->
+                <div class="pt-4 border-t border-[#E6E0DD]">
+                    <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
+                        Background Media (Image or Video)
+                    </label>
+                    
+                    <!-- File Input -->
+                    <InputFile OnChange="HandleFileSelection" class="w-full bg-white border border-[#D9D0CC] p-2.5 text-sm text-[#2D2424] rounded-md cursor-pointer file:mr-4 file:py-1.5 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-[#5C1D24] file:text-[#FCFBFA] hover:file:bg-[#4A171D]" />
+                    <span class="text-[11px] text-[#735A5A] mt-1 block">PNG, JPG, MP4</span>
+
+                    <!-- Preview Box (ရှိပြီးသား (သို့) အသစ်တင်လိုက်သည့် မီဒီယာကို ပြသရန်) -->
+                    @if (!string.IsNullOrEmpty(mediaPreviewUrl))
+                    {
+                        <div class="mt-4 relative rounded-lg overflow-hidden border border-[#E6E0DD] bg-black/5 max-h-72 flex items-center justify-center">
+                            @if (isVideo)
+                            {
+                                <video src="@mediaPreviewUrl" controls class="w-full h-64 object-cover"></video>
+                            }
+                            else
+                            {
+                                <img src="@mediaPreviewUrl" alt="Background Preview" class="w-full h-64 object-cover" />
+                            }
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </EditForm>
+    </div>
+
+</div>
+
+@code {
+    private HomeSectionModel homeModel = new()
+    {
+        MainTitle = "Connecting Germany and Myanmar Through Business, Trade, and Innovation",
+        Description1 = "Irrawaddy GmbH is a Munich-based company dedicated to creating business opportunities between Germany and Myanmar.",
+        Description2 = "We provide personalized and tailored consulting services for individuals, businesses, entrepreneurs, students, and organizations seeking opportunities in Germany.",
+        ButtonText = "CONTACT US",
+        ButtonLink = "/contact",
+        MediaUrl = "/images/hero-bg.jpg" // ပုံသေ ရှိပြီးသား background URL (သို့မဟုတ် path)
+    };
+
+    private string mediaPreviewUrl = "/images/hero-bg.jpg";
+    private bool isVideo = false;
+
+    protected override void OnInitialized()
+    {
+        // Component စတင်ချိန်တွင် ရှိပြီးသား Media က Image လား Video လား စစ်ဆေးခြင်း
+        CheckMediaType(mediaPreviewUrl);
+    }
+
+    private async Task HandleFileSelection(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null)
+        {
+            // Browser ပေါ်တွင် ချက်ချင်း Preview ပြရန် URL တစ်ခု ဖန်တီးခြင်း (Object URL)
+            // မှတ်ချက် - တကယ့် production တွင် memory leak မဖြစ်စေရန် ရေရှည်အတွက် IBrowserFile ကို stream ဖြင့် server သို့တင်ရပါမည်။
+            var format = file.ContentType;
+            
+            // ဖိုင်အမျိုးအစားအလိုက် ပုံ သို့မဟုတ် ဗီဒီယို ဟုတ်မဟုတ် ခွဲခြားခြင်း
+            isVideo = format.StartsWith("video/");
+
+            // Stream ကို အသုံးပြု၍ Data URL ဖန်တီးခြင်း
+            var buffer = new byte[file.Size];
+            await file.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024).ReadAsync(buffer);
+            mediaPreviewUrl = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+            
+            homeModel.MediaUrl = file.Name; // Database တွင် သိမ်းရန် ဖိုင်နာမည်ကို ထည့်ခြင်း
+        }
+    }
+
+    private void CheckMediaType(string url)
+    {
+        if (!string.IsNullOrEmpty(url))
+        {
+            var lower = url.ToLower();
+            if (lower.EndsWith(".mp4") || lower.EndsWith(".webm") || lower.EndsWith(".ogg"))
+            {
+                isVideo = true;
+            }
+            else
+            {
+                isVideo = false;
+            }
+        }
+    }
+
+    private void HandleSave()
+    {
+        // CMS မှ ပြင်ဆင်လိုက်သော အချက်အလက်များနှင့် မီဒီယာကို သိမ်းဆည်းရန် logic များ
+    }
+
+    public class HomeSectionModel
+    {
+        public string MainTitle { get; set; } = "";
+        public string Description1 { get; set; } = "";
+        public string Description2 { get; set; } = "";
+        public string ButtonText { get; set; } = "";
+        public string ButtonLink { get; set; } = "";
+        public string MediaUrl { get; set; } = "";
+    }
+}
