@@ -8,20 +8,24 @@
         .font-poppins {
             font-family: 'Poppins', sans-serif;
         }
+        /* လိုဂိုနောက်ခံအဖြူကို ဖျောက်ရန် (blend mode) */
+        .logo-blend {
+            mix-blend-mode: multiply;
+        }
     </style>
 </head>
 
 <div class="min-h-screen bg-[#F5F2F0] text-[#2D2424] flex items-center justify-center p-6 font-poppins tracking-tight">
     <div class="w-full max-w-xl bg-[#FCFBFA] border border-[#E6E0DD] rounded-lg p-8 md:p-14 relative">
         
-        <!-- Header Block -->
-        <div class="mb-10">
+        <!-- Header Block with Logo -->
+        <div class="mb-10 text-center flex flex-col items-center">
+            <div class="mb-3">
+                <img src="./Logo/mainLogo.jpg" alt="Irrawaddy Munich Logo" class="h-24 w-auto object-contain logo-blend" />
+            </div>
             <span class="text-xs uppercase text-[#5C1D24] font-medium block mb-2 tracking-normal">
-                Irrawaddy GmbH • CMS Portal
+                Irrawaddy GmbH Portal
             </span>
-            <h1 class="text-3xl font-semibold text-[#2D2424] mb-2">
-                CMS Sign In
-            </h1>
             <p class="text-sm text-[#735A5A] leading-relaxed">
                 Please enter your credentials to access the enterprise administration system.
             </p>
@@ -88,4 +92,5 @@
         public string Email { get; set; } = "";
         public string Password { get; set; } = "";
     }
+}
 }

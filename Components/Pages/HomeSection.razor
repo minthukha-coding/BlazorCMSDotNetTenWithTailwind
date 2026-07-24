@@ -1,33 +1,39 @@
 @page "/cms/edit-home"
 @layout MainLayout
-@inject NavigationManager Navigation
 
 <div class="max-w-4xl mx-auto space-y-8">
     
-    <!-- Page Header -->
-    <div class="flex items-center justify-between border-b border-[#E6E0DD] pb-6">
-        <div class="flex items-center space-x-4">
-            <!-- Back Button -->
-            <button @onclick="GoBack" 
-                    class="bg-white border border-[#D9D0CC] hover:bg-[#F5EFEE] text-[#5C1D24] p-2 rounded-md transition cursor-pointer flex items-center justify-center"
-                    title="Back">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-            </button>
-            <div>
-                <span class="text-xs uppercase text-[#5C1D24] font-medium block mb-1 tracking-normal">
-                    CMS Portal • Content Management
-                </span>
-                <h1 class="text-2xl font-semibold text-[#2D2424]">
-                    Edit Home Section (Hero)
-                </h1>
-            </div>
+    <!-- Page Header & Language Switcher -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#E6E0DD] pb-6 gap-4">
+        <div>
+            <span class="text-xs uppercase text-[#5C1D24] font-medium block mb-1 tracking-normal">
+                CMS Portal • Content Management
+            </span>
+            <h1 class="text-2xl font-semibold text-[#2D2424]">
+                Edit Home Section (Hero)
+            </h1>
         </div>
-        <button @onclick="HandleSave" 
-                class="bg-[#5C1D24] hover:bg-[#4A171D] text-[#FCFBFA] px-6 py-2.5 text-xs uppercase font-medium rounded-md transition cursor-pointer">
-            Save Changes
-        </button>
+
+        <div class="flex items-center gap-4">
+            <!-- Language Selector Tabs -->
+            <div class="inline-flex bg-[#E6E0DD]/60 p-1 rounded-md">
+                <button type="button" 
+                        @onclick='() => currentLang = "en"'
+                        class="px-3 py-1.5 text-xs font-medium rounded transition @(currentLang == "en" ? "bg-[#5C1D24] text-[#FCFBFA]" : "text-[#735A5A] hover:text-[#2D2424]")">
+                    🇬🇧 English
+                </button>
+                <button type="button" 
+                        @onclick='() => currentLang = "de"'
+                        class="px-3 py-1.5 text-xs font-medium rounded transition @(currentLang == "de" ? "bg-[#5C1D24] text-[#FCFBFA]" : "text-[#735A5A] hover:text-[#2D2424]")">
+                    🇩🇪 German
+                </button>
+            </div>
+
+            <button @onclick="HandleSave" 
+                    class="bg-[#5C1D24] hover:bg-[#4A171D] text-[#FCFBFA] px-6 py-2.5 text-xs uppercase font-medium rounded-md transition cursor-pointer">
+                Save Changes
+            </button>
+        </div>
     </div>
 
     <!-- Edit Form Card -->
@@ -35,67 +41,59 @@
         <EditForm Model="homeModel" OnValidSubmit="HandleSave">
             <div class="space-y-6">
                 
-                <!-- Main Title -->
+                <!-- Active Language Indicator Notification -->
+                <div class="bg-[#5C1D24]/10 border border-[#5C1D24]/20 p-3 rounded-md text-xs text-[#5C1D24] font-medium">
+                    You are currently editing content in: <span class="uppercase font-bold">@(currentLang == "en" ? "English (EN)" : "German (DE)")</span>
+                </div>
+
+                <!-- Main Title (Conditional based on active language) -->
                 <div>
                     <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
-                        Main Title (Heading)
+                        Main Title (@(currentLang.ToUpper()))
                     </label>
-                    <InputText @bind-Value="homeModel.MainTitle"
-                               class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                    @if (currentLang == "en")
+                    {
+                        <InputText @bind-Value="homeModel.MainTitleEn"
+                                   class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                    }
+                    else
+                    {
+                        <InputText @bind-Value="homeModel.MainTitleDe"
+                                   class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                    }
                 </div>
 
                 <!-- Description Paragraph 1 -->
                 <div>
                     <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
-                        Description Paragraph 1
+                        Description Paragraph 1 (@(currentLang.ToUpper()))
                     </label>
-                    <InputTextArea @bind-Value="homeModel.Description1" rows="3"
-                                   class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                    @if (currentLang == "en")
+                    {
+                        <InputTextArea @bind-Value="homeModel.Description1En" rows="3"
+                                       class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                    }
+                    else
+                    {
+                        <InputTextArea @bind-Value="homeModel.Description1De" rows="3"
+                                       class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                    }
                 </div>
 
-                <!-- Description Paragraph 2 -->
+                <!-- Button Text -->
                 <div>
                     <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
-                        Description Paragraph 2
+                        Action Button Text (@(currentLang.ToUpper()))
                     </label>
-                    <InputTextArea @bind-Value="homeModel.Description2" rows="3"
-                                   class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
-                </div>
-
-                <!-- Button Settings Group -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-[#E6E0DD]">
-                    <div>
-                        <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
-                            Action Button Text
-                        </label>
-                        <InputText @bind-Value="homeModel.ButtonText"
-                                   class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
-                    </div>
-                </div>
-
-                <!-- Background Media Upload & Preview Section -->
-                <div class="pt-4 border-t border-[#E6E0DD]">
-                    <label class="block text-xs uppercase font-medium text-[#5C4D4D] mb-2 tracking-normal">
-                        Background Media (Image or Video)
-                    </label>
-                    
-                    <!-- File Input -->
-                    <InputFile OnChange="HandleFileSelection" class="w-full bg-white border border-[#D9D0CC] p-2.5 text-sm text-[#2D2424] rounded-md cursor-pointer file:mr-4 file:py-1.5 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-[#5C1D24] file:text-[#FCFBFA] hover:file:bg-[#4A171D]" />
-                    <span class="text-[11px] text-[#735A5A] mt-1 block">PNG, JPG, MP4</span>
-
-                    <!-- Preview Box -->
-                    @if (!string.IsNullOrEmpty(mediaPreviewUrl))
+                    @if (currentLang == "en")
                     {
-                        <div class="mt-4 relative rounded-lg overflow-hidden border border-[#E6E0DD] bg-black/5 max-h-72 flex items-center justify-center">
-                            @if (isVideo)
-                            {
-                                <video src="@mediaPreviewUrl" controls class="w-full h-64 object-cover"></video>
-                            }
-                            else
-                            {
-                                <img src="@mediaPreviewUrl" alt="Background Preview" class="w-full h-64 object-cover" />
-                            }
-                        </div>
+                        <InputText @bind-Value="homeModel.ButtonTextEn"
+                                   class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
+                    }
+                    else
+                    {
+                        <InputText @bind-Value="homeModel.ButtonTextDe"
+                                   class="w-full bg-white border border-[#D9D0CC] px-3.5 py-3 text-sm text-[#2D2424] focus:outline-none focus:border-[#5C1D24] rounded-md"/>
                     }
                 </div>
 
@@ -106,74 +104,35 @@
 </div>
 
 @code {
+    private string currentLang = "en"; // မူလအနေဖြင့် English ကိုပြမည်
+
     private HomeSectionModel homeModel = new()
     {
-        MainTitle = "Connecting Germany and Myanmar Through Business, Trade, and Innovation",
-        Description1 = "Irrawaddy GmbH is a Munich-based company dedicated to creating business opportunities between Germany and Myanmar.",
-        Description2 = "We provide personalized and tailored consulting services for individuals, businesses, entrepreneurs, students, and organizations seeking opportunities in Germany.",
-        ButtonText = "CONTACT US",
-        ButtonLink = "/contact",
-        MediaUrl = "/images/hero-bg.jpg"
+        MainTitleEn = "Connecting Germany and Myanmar Through Business, Trade, and Innovation",
+        MainTitleDe = "Deutschland und Myanmar durch Wirtschaft, Handel und Innovation verbinden",
+        
+        Description1En = "Irrawaddy GmbH is a Munich-based company dedicated to creating business opportunities between Germany and Myanmar.",
+        Description1De = "Die Irrawaddy GmbH ist ein in München ansässiges Unternehmen, das sich der Schaffung von Geschäftsmöglichkeiten zwischen Deutschland und Myanmar widmet.",
+        
+        ButtonTextEn = "CONTACT US",
+        ButtonTextDe = "KONTAKT"
     };
-
-    private string mediaPreviewUrl = "/images/hero-bg.jpg";
-    private bool isVideo = false;
-
-    protected override void OnInitialized()
-    {
-        CheckMediaType(mediaPreviewUrl);
-    }
-
-    private void GoBack()
-    {
-        // ဥပမာ - CMS Dashboard သို့ ပြန်သွားရန် (သို့မဟုတ် လိုချင်သော path ကိုထည့်နိုင်ပါသည်)
-        Navigation.NavigateTo("/cms/dashboard");
-    }
-
-    private async Task HandleFileSelection(InputFileChangeEventArgs e)
-    {
-        var file = e.File;
-        if (file != null)
-        {
-            var format = file.ContentType;
-            isVideo = format.StartsWith("video/");
-
-            var buffer = new byte[file.Size];
-            await file.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024).ReadAsync(buffer);
-            mediaPreviewUrl = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
-            
-            homeModel.MediaUrl = file.Name;
-        }
-    }
-
-    private void CheckMediaType(string url)
-    {
-        if (!string.IsNullOrEmpty(url))
-        {
-            var lower = url.ToLower();
-            if (lower.EndsWith(".mp4") || lower.EndsWith(".webm") || lower.EndsWith(".ogg"))
-            {
-                isVideo = true;
-            }
-            else
-            {
-                isVideo = false;
-            }
-        }
-    }
 
     private void HandleSave()
     {
-        // CMS မှ ပြင်ဆင်လိုက်သော အချက်အလက်များနှင့် မီဒီယာကို သိမ်းဆည်းရန် logic များ
+        // ဘာသာစကားနှစ်မျိုးစလုံး၏ ဒေတာများကို Database သို့ တစ်ပါတည်း သိမ်းဆည်းရန်
     }
 
     public class HomeSectionModel
     {
-        public string MainTitle { get; set; } = "";
-        public string Description1 { get; set; } = "";
-        public string Description2 { get; set; } = "";
-        public string ButtonText { get; set; } = "";
-        public string ButtonLink { get; set; } = "";
-        public string MediaUrl { get; set; } = "";
+        // English Fields
+        public string MainTitleEn { get; set; } = "";
+        public string Description1En { get; set; } = "";
+        public string ButtonTextEn { get; set; } = "";
+
+        // German Fields
+        public string MainTitleDe { get; set; } = "";
+        public string Description1De { get; set; } = "";
+        public string ButtonTextDe { get; set; } = "";
     }
 }
