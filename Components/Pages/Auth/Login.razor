@@ -41,7 +41,6 @@
             </div>
         }
 
-        <!-- onsubmit မှာ JS function ခေါ်ပြီး 2 seconds ဆိုင်းငံ့ပါမည် -->
         <form id="loginForm" action="/api/login" method="post" onsubmit="handleLoginSubmit(event)">
             <div class="space-y-6 mb-8">
                 <div>
@@ -89,7 +88,6 @@
     </div>
 </div>
 
-<!-- JavaScript သုံးပြီး 2 seconds ဆိုင်းငံ့ကာ Data များမပျောက်စေဘဲ API သို့ ပို့ရန် -->
 <script>
     function handleLoginSubmit(event) {
         event.preventDefault();
@@ -98,10 +96,8 @@
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
 
-        // ခလုတ်ကိုသာ ပိတ်မည် (Input များကို disabled မလုပ်ပါ၊ သို့မှသာ data ပါလာမည်)
         submitBtn.disabled = true;
 
-        // Loading Spinner ပြောင်းမည်
         btnText.innerHTML = `
             <svg class="animate-spin h-4 w-4 text-[#FCFBFA] inline-block mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -110,7 +106,6 @@
             Signing In...
         `;
 
-        // 2 seconds ပြည့်မှ Form Data အပြည့်အစုံဖြင့် ပုံမှန်အတိုင်း ဆက်တင်မည်
         setTimeout(() => {
             HTMLFormElement.prototype.submit.call(form);
         }, 2000);
